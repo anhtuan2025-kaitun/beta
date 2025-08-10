@@ -11675,4 +11675,57 @@ RunService.Stepped:Connect(function()
     end
 end)
 
+-- Script đặt trong ServerScriptService
+
+local Players = game:GetService("Players")
+local DataStoreService = game:GetService("DataStoreService")
+local MyDataStore = DataStoreService:GetDataStore("PartPositionDataStore")
+
+local PartToSave = workspace:WaitForChild("PartToSave")
+
+-- Hàm lưu dữ liệu
+local function saveData(player)
+    local success, err = pcall(function()
+        local data = {
+            Position = PartToSave.Position
+        }
+        MyDataStore:SetAsync(player.UserId, data)
+    end)
+    if success then
+        print("Đã lưu dữ liệu thành công cho " .. player.Name)
+    else
+        warn("Lỗi khi lưu dữ liệu cho " .. player.Name .. ": " .. err)
+    end
+end
+
+-- Hàm tải dữ liệu
+local function loadData(player)
+    local success, data = pcall(function()
+        return MyDataStore:GetAsync(player.UserId)
+    end)
+    if success and data then
+        PartToSave.Position = data.Position
+        print("Đã tải dữ liệu thành công cho " .. player.Name)
+    else
+        warn("Không tìm thấy dữ liệu hoặc lỗi khi tải dữ liệu cho " .. player.Name .. ": " .. tostring(data))
+    end
+end
+
+-- Sự kiện khi người chơi tham gia
+Players.PlayerAdded:Connect(function(player)
+    loadData(player)
+end)
+
+-- Sự kiện khi người chơi rời đi
+Players.PlayerRemoving:Connect(function(player)
+    saveData(player)
+end)
+
+-- Thêm một nút để di chuyển Part và kiểm tra
+local ClickPart = workspace:WaitForChild("ClickPart")
+ClickPart.ClickDetector.MouseClick:Connect(function()
+    PartToSave.Position = PartToSave.Position + Vector3.new(0, 5, 0)
+    print("PartToSave đã được di chuyển.")
+end)
      
+

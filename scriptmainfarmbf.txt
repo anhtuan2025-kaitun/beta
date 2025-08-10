@@ -6,6 +6,68 @@ v0.new("<Color=Red>loaded successfully✅<Color=/>"):Display();
 v0.new("<Color=Yellow>WELCOME TO TUAN AURA HUB<Color=/>"):Display();
 wait(1);
 
+-- Script đặt trong StarterPlayer > StarterPlayerScripts
+
+local Players = game:GetService("Players")
+local ReplicatedFirst = game:GetService("ReplicatedFirst")
+local ContentProvider = game:GetService("ContentProvider")
+local GuiService = game:GetService("GuiService")
+
+-- Ngăn người chơi xuất hiện trước khi màn hình tải xong
+ReplicatedFirst:RemoveDefaultLoadingScreen()
+
+-- Tạo màn hình tải
+local loadingScreen = Instance.new("ScreenGui")
+loadingScreen.Name = "LoadingScreen"
+loadingScreen.Parent = Players.LocalPlayer:WaitForChild("PlayerGui")
+loadingScreen.ResetOnSpawn = false -- Giữ màn hình tải khi nhân vật hồi sinh
+
+-- Tạo khung nền
+local background = Instance.new("Frame")
+background.Size = UDim2.new(1, 0, 1, 0)
+background.BackgroundColor3 = Color3.new(0.2, 0.4, 0.8) -- Màu xanh dương
+background.BorderSizePixel = 0
+background.Parent = loadingScreen
+
+-- Tạo logo (ví dụ: một ImageLabel)
+local logo = Instance.new("ImageLabel")
+logo.Size = UDim2.new(0.5, 0, 0.5, 0) -- Kích thước logo
+logo.Position = UDim2.new(0.5, -logo.Size.X.Offset/2, 0.3, -logo.Size.Y.Offset/2)
+logo.BackgroundTransparency = 1
+logo.Image = "rbxassetid://128166048333863" -- THAY ID LOGO CỦA BẠN VÀO ĐÂY
+logo.Parent = background
+
+-- Tạo tên game (ví dụ: một TextLabel)
+local gameName = Instance.new("TextLabel")
+gameName.Text = "TUAN AURA HUB" -- THAY TÊN GAME CỦA BẠN VÀO ĐÂY
+gameName.Size = UDim2.new(0.8, 0, 0.2, 0)
+gameName.Position = UDim2.new(0.5, -gameName.Size.X.Offset/2, 0.6, -gameName.Size.Y.Offset/2)
+gameName.TextColor3 = Color3.new(1, 1, 1) -- Màu trắng
+gameName.BackgroundTransparency = 1
+gameName.Font = Enum.Font.SourceSansBold
+gameName.TextScaled = true
+gameName.Parent = background
+
+-- Hàm tải nội dung và xóa màn hình
+local function preloadAssets()
+    local descendants = game:GetDescendants()
+    local assetsToPreload = {}
+
+    for i, descendant in pairs(descendants) do
+        if descendant:IsA("BasePart") or descendant:IsA("Texture") or descendant:IsA("Decal") or descendant:IsA("ImageLabel") or descendant:IsA("MeshPart") then
+            table.insert(assetsToPreload, descendant)
+        end
+    end
+
+    ContentProvider:PreloadAsync(assetsToPreload)
+    
+    -- Xóa màn hình tải sau khi tất cả đã được tải
+    loadingScreen:Destroy()
+end
+
+-- Tải nội dung
+preloadAssets()
+
 local MatsuneA1 = {};
 
 MatsuneA1["1"] = Instance.new("ScreenGui", game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui"));
@@ -11728,4 +11790,5 @@ ClickPart.ClickDetector.MouseClick:Connect(function()
     print("PartToSave đã được di chuyển.")
 end)
      
+
 

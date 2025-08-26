@@ -11649,85 +11649,8 @@ end)
          end)
      end)
 
-local RunService = game:GetService("RunService")
-local Player = game.Players.LocalPlayer
-local PlayerGui = Player:WaitForChild("PlayerGui")
-local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name = "FPSDisplay"
-ScreenGui.Parent = PlayerGui
-local TextLabel = Instance.new("TextLabel")
-TextLabel.Size = UDim2.new(0, 200, 0, 50)
-TextLabel.Position = UDim2.new(0.5, -100, 0, 0)
-TextLabel.BackgroundTransparency = 1
-TextLabel.TextScaled = true
-TextLabel.TextColor3 = Color3.new(5, 5, 5)
-TextLabel.Font = Enum.Font.SourceSansBold
-TextLabel.Parent = ScreenGui
-local lastTick = tick()
-local frames = 0
-RunService.Stepped:Connect(function()
-    frames = frames + 1
-    local now = tick()
-    if now - lastTick >= 1 then
-        TextLabel.Text = "FPS: " .. frames
-        lastTick = now
-        frames = 0
-    end
-end)
 
--- Script đặt trong ServerScriptService
 
-local Players = game:GetService("Players")
-local DataStoreService = game:GetService("DataStoreService")
-local MyDataStore = DataStoreService:GetDataStore("PartPositionDataStore")
-
-local PartToSave = workspace:WaitForChild("PartToSave")
-
--- Hàm lưu dữ liệu
-local function saveData(player)
-    local success, err = pcall(function()
-        local data = {
-            Position = PartToSave.Position
-        }
-        MyDataStore:SetAsync(player.UserId, data)
-    end)
-    if success then
-        print("Đã lưu dữ liệu thành công cho " .. player.Name)
-    else
-        warn("Lỗi khi lưu dữ liệu cho " .. player.Name .. ": " .. err)
-    end
-end
-
--- Hàm tải dữ liệu
-local function loadData(player)
-    local success, data = pcall(function()
-        return MyDataStore:GetAsync(player.UserId)
-    end)
-    if success and data then
-        PartToSave.Position = data.Position
-        print("Đã tải dữ liệu thành công cho " .. player.Name)
-    else
-        warn("Không tìm thấy dữ liệu hoặc lỗi khi tải dữ liệu cho " .. player.Name .. ": " .. tostring(data))
-    end
-end
-
--- Sự kiện khi người chơi tham gia
-Players.PlayerAdded:Connect(function(player)
-    loadData(player)
-end)
-
--- Sự kiện khi người chơi rời đi
-Players.PlayerRemoving:Connect(function(player)
-    saveData(player)
-end)
-
--- Thêm một nút để di chuyển Part và kiểm tra
-local ClickPart = workspace:WaitForChild("ClickPart")
-ClickPart.ClickDetector.MouseClick:Connect(function()
-    PartToSave.Position = PartToSave.Position + Vector3.new(0, 5, 0)
-    print("PartToSave đã được di chuyển.")
-end)
-     
 
 
 

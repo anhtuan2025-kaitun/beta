@@ -1,0 +1,177 @@
+-- sosc lọ hub
+
+local Players = game:GetService("Players")
+local UserInput = game:GetService("UserInputService")
+local RunService = game:GetService("RunService")
+
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+local Humanoid = Character:WaitForChild("Humanoid")
+
+-- Tải UI
+local success, UI = pcall(function()
+    return loadstring(game:HttpGet("https://raw.githubusercontent.com/daucobonhi/UiRedzV5/refs/heads/main/DemoUi.lua"))()
+end)
+if not success then return end
+
+-- Tạo cửa sổ GUI
+local Window = UI:MakeWindow({
+    Title = "TUANHELLO HUB",
+    SubTitle = "By @Nguyenanhtuan",
+    SaveFolder = "ChubbyCombo"
+})
+
+Window:AddMinimizeButton({})
+
+local MainTab = Window:MakeTab({ "Main" })
+
+MainTab:AddSection("Lover")
+
+local isPunching = false
+local PunchAnim
+local TargetPlayer = nil
+local PlayerList = {}
+
+-- Cập nhật danh sách người chơi
+local function RefreshPlayerList()
+    PlayerList = {}
+    for _, p in ipairs(Players:GetPlayers()) do
+        if p ~= LocalPlayer then table.insert(PlayerList, p.Name) end
+    end
+end
+RefreshPlayerList()
+
+-- Chọn người chơi cần "tiếp cận"
+MainTab:AddDropdown({
+    Name = "Chọn PI TIÊN",
+    Options = PlayerList,
+    Callback = function(selected)
+        TargetPlayer = Players:FindFirstChild(selected)
+    end
+})
+
+-- Nút cập nhật danh sách người chơi
+MainTab:AddButton({
+    Name = "Làm Mới Danh Sách pi tiên vó tu",
+    Callback = RefreshPlayerList
+})
+
+-- Load animation đấm
+local function LoadPunchAnimation()
+    local anim = Instance.new("Animation")
+    anim.AnimationId = "rbxassetid://148840371" -- animation đấm
+    PunchAnim = Humanoid:LoadAnimation(anim)
+    PunchAnim.Looped = true
+end
+
+-- 🔥 Chức năng "Make Love" (bám dính + animation)
+MainTab:AddToggle({
+    Name = "Dííí",
+    Default = false,
+    Callback = function(state)
+        isPunching = state
+
+        -- Nếu chưa chọn người thì báo lỗi
+        if not TargetPlayer then
+            UI:Notification("Hãy chọn pi tiên đã!", 3)
+            return
+        end
+
+        if state then
+            if not PunchAnim then LoadPunchAnimation() end
+            PunchAnim:Play()
+
+            -- Cơ chế ghì sát người chơi
+            task.spawn(function()
+                while isPunching and TargetPlayer and TargetPlayer.Character do
+                    local targetHRP = TargetPlayer.Character:FindFirstChild("HumanoidRootPart")
+                    local myHRP = LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+                    if targetHRP and myHRP then
+                        myHRP.CFrame = targetHRP.CFrame * CFrame.new(0, 0, 0.8) -- độ sát
+                    else break end
+                    task.wait(0.03)
+                end
+            end)
+        else
+            if PunchAnim then PunchAnim:Stop() end
+        end
+    end
+})
+
+MainTab:AddSection("Lonely (Hiệu ứng tự chơi)")
+
+-- 🕺 Hiệu ứng lắc người (Gunning)
+local isDancing = false
+local DanceAnim
+
+local DanceAnimation = Instance.new("Animation")
+DanceAnimation.AnimationId = "rbxassetid://698251653" -- animation nhún
+
+local function DanceLoop()
+    while isDancing do
+        DanceAnim = Humanoid:LoadAnimation(DanceAnimation)
+        DanceAnim:Play()
+        task.wait(0.5)
+        DanceAnim:Stop()
+    end
+end
+
+MainTab:AddToggle({
+    Name = "Lover",
+    Default = false,
+    Callback = function(state)
+        isDancing = state
+        if state then task.spawn(DanceLoop) else if DanceAnim then DanceAnim:Stop() end end
+    end
+})
+
+-- 😎 Fly mode (bay chậm + xoay người)
+local ChillObjects = {}
+local ChillActive = false
+
+local function EnableChill()
+    local hrp = LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+    Humanoid.PlatformStand = true
+    Humanoid.AutoRotate = false
+
+    local bv = Instance.new("BodyVelocity")
+    bv.MaxForce = Vector3.new(4000, 4000, 4000)
+    bv.Velocity = Vector3.zero
+    bv.Parent = hrp
+    ChillObjects.BodyVelocity = bv
+
+    ChillActive = true
+end
+
+local function DisableChill()
+    Humanoid.PlatformStand = false
+    Humanoid.AutoRotate = true
+    for _, obj in pairs(ChillObjects) do if obj then obj:Destroy() end end
+    ChillActive = false
+end
+
+MainTab:AddToggle({
+    Name = "hoá chill guys",
+    Default = false,
+    Callback = function(state)
+        if state then EnableChill() else DisableChill() end
+    end
+})
+
+-- Điều khiển bay
+RunService.Heartbeat:Connect(function()
+    if not ChillActive or not ChillObjects.BodyVelocity then return end
+
+    local moveVec = Vector3.new(
+        UserInput:IsKeyDown(Enum.KeyCode.D) and 1 or UserInput:IsKeyDown(Enum.KeyCode.A) and -1 or 0,
+        UserInput:IsKeyDown(Enum.KeyCode.Space) and 1 or UserInput:IsKeyDown(Enum.KeyCode.LeftControl) and -1 or 0,
+        UserInput:IsKeyDown(Enum.KeyCode.W) and -1 or UserInput:IsKeyDown(Enum.KeyCode.S) and 1 or 0
+    )
+
+    local cam = workspace.CurrentCamera
+    ChillObjects.BodyVelocity.Velocity = cam.CFrame:VectorToWorldSpace(moveVec) * 5
+end)) * 5
+end)VectorToWorldSpace(moveVec) * 5
+end).CFrame:VectorToWorldSpace(moveVec) * 5
+end)y.Velocity = cam.CFrame:VectorToWorldSpace(moveVec) * 5
+end)

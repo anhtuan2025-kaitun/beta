@@ -46,7 +46,7 @@ end
 repeat
     wait()
 until game.Players.LocalPlayer.Character
--code attack
+-- code attack
 function CheckQuest() 
     MyLevel = game:GetService("Players").LocalPlayer.Data.Level.Value
     if World1 then

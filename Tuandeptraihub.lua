@@ -1,3 +1,9 @@
+getgenv().Settings = {
+    JoinTeam = true,
+    Team = "Pirates"
+}
+-- =======================
+
 repeat
     wait()
 until game:IsLoaded()
@@ -9,6 +15,7 @@ elseif game.PlaceId == 4442272183 or game.PlaceId == 79091703265657 then
 elseif game.PlaceId == 7449423635 or game.PlaceId == 100117331123089 then
     World3 = true
 end
+
 local function setTeam(teamName)
     game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("SetTeam", teamName)
 end

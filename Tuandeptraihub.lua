@@ -1,20 +1,14 @@
 getgenv().Settings = {
-    JoinTeam = true,
-    Team = "Pirates"
+    JoinTeam = true, -- true = Tự vào team
+    Team = "Pirates" -- Chọn "Pirates" hoặc "Marines"
 }
--- =======================
+repeat wait() until game:IsLoaded() and game.Players.LocalPlayer
 
-repeat
-    wait()
-until game:IsLoaded()
+local PlaceId = game.PlaceId
+World1 = (PlaceId == 85211729168715 or PlaceId == 2753915549)
+World2 = (PlaceId == 79091703265657 or PlaceId == 4442272183)
+World3 = (PlaceId == 100117331123089 or PlaceId == 7449423635)
 
-if game.PlaceId == 2753915549 or game.PlaceId == 85211729168715 then
-    World1 = true
-elseif game.PlaceId == 4442272183 or game.PlaceId == 79091703265657 then
-    World2 = true
-elseif game.PlaceId == 7449423635 or game.PlaceId == 100117331123089 then
-    World3 = true
-end
 
 local function setTeam(teamName)
     game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("SetTeam", teamName)
@@ -9039,6 +9033,21 @@ spawn(function()
             end
         end)
     end
+end)end
+end)     end
+        end)
+    end
+end)
+end)se-Plane"].Size = Vector3.new(1000, 80, 1000)
+            end
+        end)
+    end
+end)end
+end)     end
+        end)
+    end
+end)
+end)  end
 end)end
 end)     end
         end)

@@ -1,13 +1,36 @@
 repeat
     wait()
 until game:IsLoaded()
-if game.PlaceId == 2753915549 then
-    World1 = true
-elseif game.PlaceId == 4442272183 then
-    World2 = true
-elseif game.PlaceId == 7449423635 then
-    World3 = true
-end
+-- Lấy PlaceId hiện tại
+local pid = game.PlaceId
+
+-- Danh sách PlaceId của từng World
+local World1_IDs = {
+    [85211729168715] = true,   -- PlaceID bạn thêm
+    [2753915549] = true        -- Blox Fruits World 1 (gốc)
+}
+
+local World2_IDs = {
+    [79091703265657] = true,   -- PlaceID bạn thêm
+    [4442272183] = true        -- Blox Fruits World 2 (gốc)
+}
+
+local World3_IDs = {
+    [100117331123089] = true,  -- PlaceID bạn thêm
+    [7449423635] = true        -- Blox Fruits World 3 (gốc)
+}
+
+-- Gán giá trị World1, World2, World3
+World1 = World1_IDs[pid] or false
+World2 = World2_IDs[pid] or false
+World3 = World3_IDs[pid] or false
+
+-- Debug (không bắt buộc)
+print("World1:", World1)
+print("World2:", World2)
+print("World3:", World3)
+print("PlaceId:", pid)
+
 local function setTeam(teamName)
     game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("SetTeam", teamName)
 end
@@ -23,7 +46,7 @@ end
 repeat
     wait()
 until game.Players.LocalPlayer.Character
-loadstring(game:HttpGet("https://raw.githubusercontent.com/viplam087-png/Hjj/main/AttackAndBring.lua"))()
+-code attack
 function CheckQuest() 
     MyLevel = game:GetService("Players").LocalPlayer.Data.Level.Value
     if World1 then
@@ -1771,11 +1794,11 @@ gg.__namecall = newcclosure(function(...)
     end
     return old(...)
 end)
-local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/viplam087-png/Hjj/main/LibraryRedz.lua"))()
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/tlredz/Library/refs/heads/main/V5/Source.lua"))()
 local Window = Library:MakeWindow({
-  Title = "AOV HUB : Blox Fruits",
-  SubTitle = "by Nguyễn Anh Tuấn",
-  SaveFolder = "AOV Hub | Blox Fruits.lua"
+  Title = "Hiru Hub : Blox Fruits",
+  SubTitle = "by Kiddo",
+  SaveFolder = "Hiru Hub | Blox Fruits.lua"
 })
 local Discord = Window:MakeTab({
   Title = "Tab Discord",
@@ -1867,10 +1890,16 @@ UIStroke.Color = Color3.fromRGB(139, 0, 0)
 UIStroke.Thickness = 1.5
 UIStroke.Parent = ImageButton
 Discord:AddDiscordInvite({
-    Name = "AOV Hub",
-    Description = "Vô discord của mình để lấy các client hack và script!",
-    Logo = "rbxassetid://119985646328569",
-    Invite = "https://discord.gg/4VxmvqWw4"
+    Name = "Hiru Hub",
+    Description = "Join Our Discord For Update Notifications",
+    Logo = "rbxassetid://98474018544837",
+    Invite = "https://discord.gg/cEmDhtEv"
+})
+Discord:AddDiscordInvite({
+    Name = "Xester Hub",
+    Description = "Discord Server Dev Infinity Script Dev Team Hiru Hub!",
+    Logo = "rbxassetid://121207298510000",
+    Invite = "https://discord.gg/infinityscript"
 })
 local Codes = {
     "WildDares",
@@ -9025,9 +9054,7 @@ spawn(function()
             end
         end)
     end
-end).Map["WaterBase-Plane"].Size = Vector3.new(1000, 112, 1000)
-            else
-                game:GetService("Workspace").Map["WaterBase-Plane"].Size = Vector3.new(1000, 80, 1000)
+end)aterBase-Plane"].Size = Vector3.new(1000, 80, 1000)
             end
         end)
     end
